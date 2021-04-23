@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="description" content="">
+		<meta charset="utf-8">
+		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+		<script src="pasteimage.js"></script>
+		<script>
+		
+			function paste(src) {
+				$("#image").append("<img src='" + src + "'>");
+				insertImageURI();
+			}
+			
+			function insertImageURI() {
+				var c = document.createElement('canvas');
+				var img = document.getElementById('image');
+				c.height = img.Height;
+				c.width = img.Width;
+				var ctx = c.getContext('2d');
+
+				ctx.drawImage(img, 0, 0, c.width, c.height);
+				var base64String = c.toDataURL();
+				$("imginput").val(base64String);
+			}
+
+			$(function() {
+				$.pasteimage(paste);
+			});
+			
+		</script>
+	</head>
+	<body>
+	Take a screenshot and press CTRL+V to paste into this page.
+	<form id="imgboard">
+		<input id="imginput" type="text">
+	</form>
+	<div id="image" width="50%">
+	</div>
+	</body>
+</html>

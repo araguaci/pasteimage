@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="description" content="">
+		<meta charset="utf-8">
+		<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+		<script src="pasteimage.js"></script>
+		<script>
+		
+			function paste(src) {
+				$("#image").append("<img src='" + src + "'>");
+				insertImageURI();
+			}
+			
+			function insertImageURI() {
+				var newImage = document.getElementById('image');
+				newImage.src = srcData;
+
+				document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+				console.log("Converted Base64 version is " + document.getElementById("imgTest").innerHTML);
+				$("#imginput").val(document.getElementById("imgTest").innerHTML);
+			}
+
+			$(function() {
+				$.pasteimage(paste);
+			});
+			
+		</script>
+	</head>
+	<body>
+	Take a screenshot and press CTRL+V to paste into this page.
+	<form id="imgboard">
+		<input id="imginput" type="text">
+		<input id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" />
+	</form>
+	
+<div id="imgTest"></div>
+<script type='text/javascript'>
+  function encodeImageFileAsURL() {
+
+    var filesSelected = document.getElementById("inputFileToLoad").files;
+    if (filesSelected.length > 0) {
+      var fileToLoad = filesSelected[0];
+
+      var fileReader = new FileReader();
+
+      fileReader.onload = function(fileLoadedEvent) {
+        var srcData = fileLoadedEvent.target.result; // <--- data: base64
+
+        var newImage = document.createElement('img');
+        newImage.src = srcData;
+
+        document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+        console.log("Converted Base64 version is " + document.getElementById("imgTest").innerHTML);
+        $("#imginput").val(document.getElementById("imgTest").innerHTML);
+      }
+      fileReader.readAsDataURL(fileToLoad);
+    }
+  }
+</script>
+	<div id="image" width="50%">
+	</div>
+	</body>
+</html>
